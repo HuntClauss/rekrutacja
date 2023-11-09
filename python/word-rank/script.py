@@ -3,7 +3,7 @@
 # input: array with multiple strings
 # expected output: rank of the 3 most often repeated words in given set of strings and number of times they occured, case insensitive
 
-sentences = [
+sentences: list[str] = [
     'Taki mamy klimat',
     'Wszędzie dobrze ale w domu najlepiej',
     'Wyskoczył jak Filip z konopii',
@@ -21,6 +21,21 @@ sentences = [
     'Mam nadzieję, że poradzisz sobie z tym zadaniem bez problemu',
     'Nie powinno sprawić żadnego problemu, bo Google jest dozwolony',
 ]
+
+word_counter: dict[str, int] = {}
+
+words: list[str] = [v.rstrip('?') for v in (' '.join(sentences)).lower().split()]
+
+for word in words:
+    word_counter.setdefault(word, 0)
+    word_counter[word] += 1
+
+ranking: list[tuple[str, int]] = sorted(word_counter.items(), key=lambda v: v[1], reverse=True)
+TOP_RANKING_COUNT = 3
+
+for idx, v in enumerate(ranking[:TOP_RANKING_COUNT]):
+    word, encounters = v
+    print(f'{idx+1}. "{word}" - {encounters}')
 
 # Example result:
 # 1. "mam" - 12
